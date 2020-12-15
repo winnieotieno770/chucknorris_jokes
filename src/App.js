@@ -10,12 +10,12 @@ function App() {
   const [state, setState] = useState({
     joke:''
   })
-  const [query, queryState] = useState('teeth');
+  const [query, setQuery] = useState('teeth');
 
 useEffect(()=>{
 
   fetchData();
-  getResult()
+  
 
 },[])
 
@@ -29,9 +29,17 @@ const fetchData = async() => {
   
 }
 const getResult = async() => {
-  const result = await axios.get(`c`)
-  console.log(result.data.value)
+  const res = await axios.get(`https://api.chucknorris.io/jokes/search?query=${query}`)
+  console.log(res.data.result)
+  setQuery ({
+    query:res.data.result
+  })
   
+}
+
+const handleSearch = (e)=>{
+  e.preventDefault();
+  getResult();
 }
 
 
@@ -50,14 +58,22 @@ const getResult = async() => {
               <div className="card-body">
                 <input type='text'/>
               </div>
+           
+            
             </div>
             <div>
           <button className="btn btn-warning" onClick={fetchData}>Generate Joke</button>
         </div>
           </div>
 
-  <h3 className="subTitle">{state.joke}</h3>
+       <h3 className="subTitle">{state.joke}</h3>
         </div>
+
+        {/* <form onSubmit ={handleSearch}>
+                <input type="text"
+                    onChange = { e => {setQuery(e.target.value)}; value={query}/>
+               <button type='submit'>Search for topic</button>
+        </form> */}
     
     </div>
       );
